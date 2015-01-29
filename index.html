@@ -1,0 +1,151 @@
+
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6 ie-lt10 ie-lt9 ie-lt8 ie-lt7 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 ie-lt10 ie-lt9 ie-lt8 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 ie-lt10 ie-lt9 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 ie-lt10 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. --> 
+
+<head data-template-set="html5-reset">
+
+	<meta charset="utf-8">
+	
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>suggestmycolors</title>
+	
+	<meta name="title" content="suggestmycolors" />
+	<meta name="description" content="A small app that takes a color and numerically alters it to give you idea for colors to combine." />
+	<meta name="author" content="Jesse B" />
+
+	<!-- concatenate and minify for production -->
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" />
+	<link rel="stylesheet" href="jquery.colorpicker.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	
+	<!-- This is an un-minified, complete version of Modernizr. 
+		 Before you move to production, you should generate a custom build that only has the detects you need. -->
+	<script src="js/modernizr-2.6.2.dev.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+	<script src="jquery.colorpicker.js"></script>
+	<script src="swatches/jquery.ui.colorpicker-pantone.js"></script>
+	<script src="parts/jquery.ui.colorpicker-rgbslider.js"></script>
+	<script src="js/jquery.simplemodal.1.4.4.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		hex2rgb = function(hex) {
+	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	    return result ? {
+	        r: parseInt(result[1], 16),
+	        g: parseInt(result[2], 16),
+	        b: parseInt(result[3], 16),
+	        rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
+	    	} : null;
+		}
+
+
+
+		$('#pick').fadeIn(500);
+		$.ajax({
+			url: "colors.php?hex=<?php print $firstcolor; ?>",
+			cache: false
+			}).done(function(html) {
+				$("#outputs").append(html).hide().delay(300).fadeIn(500);
+			});
+			
+		$('.ab').on('click', function() {
+			$('.about').modal({
+				
+				overlayClose: true,
+				onOpen: function (dialog) {
+					dialog.overlay.fadeIn(200, function () {
+						dialog.data.hide();
+						dialog.container.fadeIn(50, function () {
+							dialog.data.fadeIn(300);	 
+							});
+						});
+					},
+				onClose: function (dialog) {
+					dialog.data.fadeOut(300, function () {
+						dialog.data.hide();
+						dialog.container.fadeIn(50, function () {
+							dialog.overlay.fadeOut(200);	 
+							});
+						});
+					}
+			});
+			return false;
+		});
+	});
+	</script>
+</head>
+
+<body>
+
+<div class="about">
+	<p>Suggestmycolors was written by Jesse B. aka <a href="http://www.colourlovers.com/lover/J-man">J-man</a> of Colourlovers.com. Perhaps sometime suggestmycolors will be hooked up to the Colourlovers API to provide more information, but for right now, it isn't. Have fun!</p>
+	<p><b>Some info on the different labels:</b> The opposites are just that, opposites of the red, green, and blue values. Half opposites are the red, green, and blue values with a half of the color scale added to them. Red, green, and blue shifts are shifts toward those colors. Check out <a href="/?hex=000000">#000000</a> to get an idea of how this works.</p>
+</div>
+
+<div id="headwrap">
+	<header>
+		<a href="/suggest/">suggestmycolors</a>
+		<nav>
+			<a href="#" class="ab">about</a>
+		</nav>
+	
+	</header>
+</div>
+
+	
+	<section id="pick" class="clearfix">
+	
+		<div class="picker">You need to turn Javascript on for this app to work properly. Sorry. :/</div>
+			<script>
+				$(function() {
+					$('.picker').colorpicker({
+						parts:			['map', 'bar', 'hex', 'hsv', 'rgb', 'swatches'],
+						swatches:		'pantone',
+						color: 			'#<?php print $firstcolor; ?>',
+						colorFormat:	'HEX',
+						swatchesWidth:	173,
+						init: function(event, color) {
+										$('.output').text(color.formatted);
+									},
+						select: function(event, color) {
+										$('.output').css('background-color', '#' + color.formatted).text('#' + color.formatted);
+										$.ajax({
+											url: "colors.php?hex=" + color.formatted,
+											cache: false
+											}).done(function(html) {
+												window.history.pushState("newhex", "", "?hex=" + color.formatted);
+												$("#outputs").empty().append(html).hide().fadeIn(400);
+											});
+									}
+					});
+				});
+			</script>
+			
+		<div class="output" style="background-color: #<?php print $firstcolor; ?>">#<?php print $firstcolor; ?></div>
+	
+	</section>
+	
+	<section id="outputs">
+	
+	</section>
+	
+	<footer>
+		
+		<p>&copy; Copyright Jesse Breneman 2014. All Rights Reserved.</p>
+		
+	</footer>
+
+<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+		 http://chromium.org/developers/how-tos/chrome-frame-getting-started -->
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+</body>
+</html>
