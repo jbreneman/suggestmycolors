@@ -22,65 +22,37 @@
 
 	<!-- concatenate and minify for production -->
 	<link rel="stylesheet" href="css/reset.css" />
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" />
-	<link rel="stylesheet" href="jquery.colorpicker.css" />
+	<link rel="stylesheet" href="css/themes.css" />
 	<link rel="stylesheet" href="css/style.css" />
 	
-	<!-- This is an un-minified, complete version of Modernizr. 
-		 Before you move to production, you should generate a custom build that only has the detects you need. -->
-	<script src="js/modernizr-2.6.2.dev.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-	<script src="jquery.colorpicker.js"></script>
-	<script src="swatches/jquery.ui.colorpicker-pantone.js"></script>
-	<script src="parts/jquery.ui.colorpicker-rgbslider.js"></script>
-	<script src="js/jquery.simplemodal.1.4.4.min.js"></script>
+
 	<script>
-	$(document).ready(function() {
-		hex2rgb = function(hex) {
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? {
-	        r: parseInt(result[1], 16),
-	        g: parseInt(result[2], 16),
-	        b: parseInt(result[3], 16),
-	        rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
-	    	} : null;
-		}
+		document.addEventListener("DOMContentLoaded", function(event) { 
+
+			hex2rgb = function(hex) {
+		    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		    return result ? {
+		        r: parseInt(result[1], 16),
+		        g: parseInt(result[2], 16),
+		        b: parseInt(result[3], 16),
+		        rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
+		    	} : null;
+			}
+
+			if(window.location.hash) {
+				var hex = window.location.hash;
+			} else {
+				var hex = "#577d06";
+			}
+
+			console.log(hex);
+			var output = document.getElementById("output");
+			output.innerHTML = hex;
+			output.style.backgroundColor = hex;
 
 
 
-		$('#pick').fadeIn(500);
-		$.ajax({
-			url: "colors.php?hex=<?php print $firstcolor; ?>",
-			cache: false
-			}).done(function(html) {
-				$("#outputs").append(html).hide().delay(300).fadeIn(500);
-			});
-			
-		$('.ab').on('click', function() {
-			$('.about').modal({
-				
-				overlayClose: true,
-				onOpen: function (dialog) {
-					dialog.overlay.fadeIn(200, function () {
-						dialog.data.hide();
-						dialog.container.fadeIn(50, function () {
-							dialog.data.fadeIn(300);	 
-							});
-						});
-					},
-				onClose: function (dialog) {
-					dialog.data.fadeOut(300, function () {
-						dialog.data.hide();
-						dialog.container.fadeIn(50, function () {
-							dialog.overlay.fadeOut(200);	 
-							});
-						});
-					}
-			});
-			return false;
 		});
-	});
 	</script>
 </head>
 
@@ -105,37 +77,13 @@
 	<section id="pick" class="clearfix">
 	
 		<div class="picker">You need to turn Javascript on for this app to work properly. Sorry. :/</div>
-			<script>
-				$(function() {
-					$('.picker').colorpicker({
-						parts:			['map', 'bar', 'hex', 'hsv', 'rgb', 'swatches'],
-						swatches:		'pantone',
-						color: 			'#<?php print $firstcolor; ?>',
-						colorFormat:	'HEX',
-						swatchesWidth:	173,
-						init: function(event, color) {
-										$('.output').text(color.formatted);
-									},
-						select: function(event, color) {
-										$('.output').css('background-color', '#' + color.formatted).text('#' + color.formatted);
-										$.ajax({
-											url: "colors.php?hex=" + color.formatted,
-											cache: false
-											}).done(function(html) {
-												window.history.pushState("newhex", "", "?hex=" + color.formatted);
-												$("#outputs").empty().append(html).hide().fadeIn(400);
-											});
-									}
-					});
-				});
-			</script>
-			
-		<div class="output" style="background-color: #<?php print $firstcolor; ?>">#<?php print $firstcolor; ?></div>
 	
 	</section>
 	
 	<section id="outputs">
-	
+		<div id="output">
+			
+		</div>
 	</section>
 	
 	<footer>

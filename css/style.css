@@ -108,6 +108,11 @@ header {
 	}
 
 /* content */
+#output {
+	width: 50%;
+	height: 25%;
+}
+
 .about {
 	position: absolute;
 	display: none;
@@ -128,7 +133,7 @@ section {
 }
 
 #pick {
-	display: none;
+
 }
 
 .picker {
