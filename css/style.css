@@ -133,7 +133,10 @@ section {
 }
 
 #pick {
-
+	background: #000000;
+	/*opacity: 0;
+	transition: opacity 0.4s;
+	-webkit-transition: opacity 0.4s;*/
 }
 
 .picker {
@@ -159,6 +162,7 @@ section {
 }
 
 #outputs {
+	/* opacity: 0; */
 	height: 325px;
 }
 
