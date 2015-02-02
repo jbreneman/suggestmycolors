@@ -29,7 +29,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 
 	function morphColor(color, addR, addG, addB, increment, amount, opposite) {
-		
+		//split into separate rgb channels
+		var rgb = hex2rgb(color);
+		var output = [];
+		for(var i = 1; i <= amount; i++) {
+
+		}
 	}
 
 	function isValidHex(hex) {
@@ -49,6 +54,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var output = document.getElementById("output");
 	output.textContent = hex;
 	output.style.backgroundColor = hex;
+
+	console.log(hex2rgb(hex));
 
 
 
