@@ -1,101 +1,114 @@
-document.addEventListener("DOMContentLoaded", function(event) { 
+function hex2rgb(hex) {
+var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+    rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
+	} : null;
+}
 
-	//split a hex color into it's individual rgb channels
-	function hex2rgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-        rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
-    	} : null;
-	}
+function componentToHex(c) {
+var hex = c.toString(16);
+return hex.length == 1 ? "0" + hex : hex;
+}
 
-	//convert rgb to hex
-	function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-	}
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 
-	function rgbToHex(r, g, b) {
-	    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-	}
-
-	//function that changes any number to the range of 0 < x < 255. Keeps iterating until within this range
-	function zeroTo255(number) {
+//function that changes any number to the range of 0 < x < 255. Keeps iterating until within this range
+function zeroTo255(number) {
+	if(number > 255) {
+		number -= 255;
 		if(number > 255) {
-			number -= 255;
-			if(number > 255) {
-				number = zeroTo255(number);
-			}
+			number = zeroTo255(number);
 		}
+	}
 
+	if(number < 0) {
+		number += 255;
 		if(number < 0) {
-			number += 255;
-			if(number < 0) {
-				number = zeroTo255(number);
-			}
+			number = zeroTo255(number);
 		}
-		return number;
 	}
+	return number;
+}
 
-	function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
-		//split into separate rgb channels
-		var startRGB = hex2rgb(color);
+//the meat of the app. takes a color and returns divs
+function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
+	//split into separate rgb channels
+	var startRGB = hex2rgb(color);
 
-		//save the current data in mutate, and set the mutate increment to the initial data
-		var mutate = {r: addR + increment, g: addG + increment, b: addB + increment};
-		var mutateBy = {r: mutate.r, g: mutate.g, b: mutate.b}; 
+	//save the current data in mutate, and set the mutate increment to the initial data
+	var mutate = {r: addR + increment, g: addG + increment, b: addB + increment};
+	var mutateBy = {r: mutate.r, g: mutate.g, b: mutate.b}; 
+	var output = "";
 
-		var insideColor = "";
-		var output = "";
-
-		for(var i = 1; i <= amount; i++) {
-			if(opposite === true) {
-				insideColor = function() {
-					var r = addR > 0 ? 255 - startRGB.r : startRGB.r;
-					var g = addG > 0 ? 255 - startRGB.g : startRGB.g;
-					var b = addB > 0 ? 255 - startRGB.b : startRGB.b;
-					return rgbToHex(r, g, b);
-				}
-			} else {
-				insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
+	for(var i = 1; i <= amount; i++) {
+		if(opposite === true) {
+			var insideColor = function() {
+				var r = addR > 0 ? 255 - startRGB.r : startRGB.r;
+				var g = addG > 0 ? 255 - startRGB.g : startRGB.g;
+				var b = addB > 0 ? 255 - startRGB.b : startRGB.b;
+				return rgbToHex(r, g, b);
 			}
-
-			output += "<div class=\"color\" style=\"background: " + insideColor + "\"><a href=\"index.html" + insideColor + "\">" + insideColor + "</a></div>";
-			mutate = {r: mutate.r + mutateBy.r, g: mutate.g + mutateBy.g, b: mutate.b + mutateBy.b};
-
+		} else {
+			var insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
 		}
-		return "<div class=\"column\">" + output + "</div>";
+
+		output += "<div class=\"color\" style=\"background: " + insideColor + "\"><a href=\"index.html" + insideColor + "\">" + insideColor + "</a></div>";
+		mutate = {r: mutate.r + mutateBy.r, g: mutate.g + mutateBy.g, b: mutate.b + mutateBy.b};
+
 	}
+	return "<div class=\"column\">" + output + "</div>";
+}
 
-	function isValidHex(hex) {
-		return /^#[0-9A-F]{6}$/i.test(hex);
-	}
+//this returns divs of mutated colors based on global var hex that gets passed around more than a football in the superbowl
+//above analogy may be wrong, i hate sports
+function printColors() {
+	return mutateColor(hex, 32, 0, 0, 0, 5, false) + mutateColor(hex, 0, 32, 0, 0, 5, false) + mutateColor(hex, 0, 0, 32, 0, 5, false);
+}
 
-	//grab color from current url hash
-	var hex = window.location.hash;
+function isValidHex(hex) {
+	var valid = /^#[0-9A-F]{6}$/i.test(hex);
+	return valid ? hex : "#577d06";
+}
 
-	if(hex&&isValidHex(hex)) {
-		var hex = window.location.hash;
-	} else {
-		var hex = "#577d06";
-	}
+var hex = isValidHex(window.location.hash);;
+var color = document.getElementById("color");
+var slider = document.getElementById("slider");
+var picker = document.getElementById("picker");
+var output = document.getElementById("outputs");
+var sliderIndicator = document.getElementById("slider-indicator");
+var pickerIndicator = document.getElementById("picker-indicator");
 
-	console.log(hex);
-	var color = document.getElementById("pick");
-	color.innerHTML = "";
-	color.textContent = hex;
-	color.style.backgroundColor = hex;
+color.innerHTML = "";
 
-	console.log("first color:");
-	console.log(hex2rgb(hex));
+ColorPicker.fixIndicators(sliderIndicator, pickerIndicator);
 
-	var output = document.getElementById("outputs");
-	var divs = mutateColor(hex, 32, 0, 0, 0, 5, false) + mutateColor(hex, 0, 32, 0, 0, 5, false) + mutateColor(hex, 0, 0, 32, 0, 5, false);
-	output.innerHTML = divs;
+var cp = ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate, sliderCoordinate) {
+				ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
+                color.innerHTML = "<p>" + cpHex + "</p>";
+				//color.textContent = cpHex;
+				color.style.backgroundColor = cpHex;
+				hex = cpHex
+				output.innerHTML = printColors();
+            });
 
+cp.setHex(hex);
 
+picker.addEventListener("mouseup", function() {
+	window.location.hash = hex;
+})
 
+//watch for the hash change and make sure the colorpicker stays updated. Only needed due to being able to click on mutated colors
+window.addEventListener("hashchange", function() {
+	hex = isValidHex(window.location.hash);
+	output.innerHTML = printColors();
 
+	cp.setHex(hex);
 });
+
+
+

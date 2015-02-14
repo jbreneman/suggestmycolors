@@ -22,11 +22,10 @@
 
 	<!-- concatenate and minify for production -->
 	<link rel="stylesheet" href="css/reset.css" />
-	<link rel="stylesheet" href="css/themes.css" />
 	<link rel="stylesheet" href="css/style.css" />
 	
 
-	<script src="js/main.js"></script>
+	
 </head>
 
 <body>
@@ -46,23 +45,34 @@
 	</header>
 </div>
 
-	
-	<section id="pick" class="clearfix">
-	
-		<div class="picker">You need to turn Javascript on for this app to work properly. Sorry. :/</div>
-	
+<main>
+	<section id="pick">
+		<div id="picker-wrapper">
+		  <div id="picker"></div>
+		  <div id="picker-indicator"></div>
+		</div>
+		<div id="slider-wrapper">
+		  <div id="slider"></div>
+		  <div id="slider-indicator"></div>
+		</div>
+		<div id="color">
+			You need to turn Javascript on for this app to work properly. Sorry. :/
+		</div>
 	</section>
 	
 	<section id="outputs">
 	
 	</section>
+</main>
 	
-	<footer>
-		
-		<p>&copy; Copyright Jesse Breneman 2014. All Rights Reserved.</p>
-		
-	</footer>
+<footer>
+	
+	<p>&copy; Copyright Jesse Breneman 2014. All Rights Reserved.</p>
+	
+</footer>
 
+<script src="js/colorpicker.min.js"></script>
+<script src="js/main.js"></script>
 <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
 		 http://chromium.org/developers/how-tos/chrome-frame-getting-started -->
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
