@@ -77,6 +77,7 @@ function isValidHex(hex) {
 
 var hex = isValidHex(window.location.hash);;
 var color = document.getElementById("color");
+var pick = document.getElementById("pick");
 var slider = document.getElementById("slider");
 var picker = document.getElementById("picker");
 var output = document.getElementById("outputs");
@@ -91,7 +92,8 @@ var cp = ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate,
 				ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
                 color.innerHTML = "<p>" + cpHex + "</p>";
 				//color.textContent = cpHex;
-				color.style.backgroundColor = cpHex;
+				//color.style.backgroundColor = cpHex;
+				pick.style.backgroundColor = cpHex;
 				hex = cpHex
 				output.innerHTML = printColors();
             });
