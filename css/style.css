@@ -61,8 +61,10 @@ body {
 	font-family: ciclesemi;
 }
 
-h3 {
-	font-size: 1.5em;
+h2 {
+	font-size: 1.8rem;
+	padding: 1rem 0 1rem 25%;
+	width: 100%;
 }
 
 p {
@@ -213,38 +215,43 @@ main {
 }
 
 #outputs {
+	width: 100%;
 	/* opacity: 0; */
 }
 
 .column {
 	display: inline-block;
+	width: 20%;
 }
 
 .color {
-	width: 175px;
-	height: 25px;
-	margin: 5px 3px 5px 3px;
+	width: 100%;
+	height: 7rem;
 	padding: 2px 0 0 0;
 	text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6), 0px 0px 2px rgba(0, 0, 0, 0.9);
-	transition: height 0.3s;
-	-webkit-transition: height 0.3s;
+	border: 0 solid white;
+	transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
 }
 	
 	.color:hover {
-		height: 125px;
-		transition: height 0.3s;
-		-webkit-transition: height 0.3s;
+		border: 3px solid #fff;
+		transition: all 0.2s ease;
+		-webkit-transition: all 0.2s ease;
 	}
 
 	.color a{
 		float: right;
-		padding: 2px;
+		font-size: 2rem;
+		padding: 2rem 0 0 25%;
 		color: #fff;
 		text-decoration: none;
+		width: 100%;
+		height: 100%;
 	}
 	
 	.color a:hover {
-		color: rgba(255, 255, 255, 0.8);
+		color: rgba(255, 255, 255, 0.9);
 	}
 
 /* footer */

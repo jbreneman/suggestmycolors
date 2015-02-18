@@ -47,12 +47,7 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 
 	for(var i = 1; i <= amount; i++) {
 		if(opposite === true) {
-			var insideColor = function() {
-				var r = addR > 0 ? 255 - startRGB.r : startRGB.r;
-				var g = addG > 0 ? 255 - startRGB.g : startRGB.g;
-				var b = addB > 0 ? 255 - startRGB.b : startRGB.b;
-				return rgbToHex(r, g, b);
-			}
+			var insideColor = rgbToHex(addR > 0 ? 255 - startRGB.r : startRGB.r, addG > 0 ? 255 - startRGB.g : startRGB.g, addB > 0 ? 255 - startRGB.b : startRGB.b);
 		} else {
 			var insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
 		}
@@ -61,13 +56,18 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 		mutate = {r: mutate.r + mutateBy.r, g: mutate.g + mutateBy.g, b: mutate.b + mutateBy.b};
 
 	}
-	return "<div class=\"column\">" + output + "</div>";
+	return output;
 }
 
 //this returns divs of mutated colors based on global var hex that gets passed around more than a football in the superbowl
 //above analogy may be wrong, i hate sports
 function printColors() {
-	return mutateColor(hex, 32, 0, 0, 0, 5, false) + mutateColor(hex, 0, 32, 0, 0, 5, false) + mutateColor(hex, 0, 0, 32, 0, 5, false);
+	var o = "<div class=\"column\"><h2>Opposites</h2>" + mutateColor(hex, 255, 0, 0, 0, 1, true) + mutateColor(hex, 0, 255, 0, 0, 1, true) + mutateColor(hex, 0, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 0, 0, 1, true) + mutateColor(hex, 0, 255, 255, 0, 1, true) + mutateColor(hex, 255, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 255, 0, 1, true) + "</div>" +
+			"<div class=\"column\"><h2>Half Opposites</h2>" + mutateColor(hex, 128, -32, 0, 0, 1, false) + mutateColor(hex, 0, 128, -32, 0, 1, false) + mutateColor(hex, -32, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 0, 0, 1, false) + mutateColor(hex, 0, 128, 128, 0, 1, false) + mutateColor(hex, 128, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 128, 0, 1, false) + "</div>" +
+			"<div class=\"column\"><h2>Red Shift</h2>" + mutateColor(hex, 32, 0, 0, 0, 7, false) + "</div>" +
+			"<div class=\"column\"><h2>Green Shift</h2>" + mutateColor(hex, 0, 32, 0, 0, 7, false) + "</div>" +
+			"<div class=\"column\"><h2>Blue Shift</h2>" + mutateColor(hex, 0, 0, 32, 0, 7, false) + "</div>";
+	return o;
 }
 
 function isValidHex(hex) {
