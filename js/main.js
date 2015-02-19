@@ -124,14 +124,27 @@ window.addEventListener("hashchange", function() {
 	cp.setHex(hex);
 });
 
+function toggleClass(ref, first, second) {
+	return ref.className === first ? ref.className = second : ref.className = first;
+}
+var about = document.getElementById("about");
+var overlay = document.getElementById("overlay");
+
 document.getElementById("about-anchor").addEventListener("click", function(e) {
 	e.preventDefault();
-	document.getElementById("about").style.display = "block";
+
+	toggleClass(about, "hide", "show");
+	toggleClass(overlay, "hide", "show");
 });
 
 document.getElementById("close").addEventListener("click", function() {
-	document.getElementById("about").style.display = "none";
+	toggleClass(about, "hide", "show");
+	toggleClass(overlay, "hide", "show");
 });
 
+document.getElementById("overlay").addEventListener("click", function() {
+	toggleClass(about, "hide", "show");
+	toggleClass(overlay, "hide", "show");
+});
 
 
