@@ -62,12 +62,11 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 //this returns divs of mutated colors based on global var hex that gets passed around more than a football in the superbowl
 //above analogy may be wrong, i hate sports
 function printColors() {
-	var o = "<div class=\"column\"><h2>Opposites</h2>" + mutateColor(hex, 255, 0, 0, 0, 1, true) + mutateColor(hex, 0, 255, 0, 0, 1, true) + mutateColor(hex, 0, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 0, 0, 1, true) + mutateColor(hex, 0, 255, 255, 0, 1, true) + mutateColor(hex, 255, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 255, 0, 1, true) + "</div>" +
+	return  "<div class=\"column\"><h2>Opposites</h2>" + mutateColor(hex, 255, 0, 0, 0, 1, true) + mutateColor(hex, 0, 255, 0, 0, 1, true) + mutateColor(hex, 0, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 0, 0, 1, true) + mutateColor(hex, 0, 255, 255, 0, 1, true) + mutateColor(hex, 255, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 255, 0, 1, true) + "</div>" +
 			"<div class=\"column\"><h2>Half Opposites</h2>" + mutateColor(hex, 128, -32, 0, 0, 1, false) + mutateColor(hex, 0, 128, -32, 0, 1, false) + mutateColor(hex, -32, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 0, 0, 1, false) + mutateColor(hex, 0, 128, 128, 0, 1, false) + mutateColor(hex, 128, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 128, 0, 1, false) + "</div>" +
 			"<div class=\"column\"><h2>Red Shift</h2>" + mutateColor(hex, 32, 0, 0, 0, 7, false) + "</div>" +
 			"<div class=\"column\"><h2>Green Shift</h2>" + mutateColor(hex, 0, 32, 0, 0, 7, false) + "</div>" +
 			"<div class=\"column\"><h2>Blue Shift</h2>" + mutateColor(hex, 0, 0, 32, 0, 7, false) + "</div>";
-	return o;
 }
 
 function isValidHex(hex) {
@@ -78,6 +77,8 @@ function isValidHex(hex) {
 var hex = isValidHex(window.location.hash);;
 var color = document.getElementById("color");
 var pick = document.getElementById("pick");
+var header = document.getElementById("headwrap");
+var headAnchor = header.getElementsByClassName("head-anchor")
 var slider = document.getElementById("slider");
 var picker = document.getElementById("picker");
 var output = document.getElementById("outputs");
@@ -93,6 +94,12 @@ var cp = ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate,
                 color.innerHTML = "<p>" + cpHex + "</p>";
 				//color.textContent = cpHex;
 				//color.style.backgroundColor = cpHex;
+				header.style.backgroundColor = cpHex;
+
+				for(i = 0; i < headAnchor.length; ++i) {
+					(hsv.v > .6 && hsv.s < .6) ? headAnchor[i].style.color = "#000" : headAnchor[i].style.color = "#fff";
+				}
+
 				pick.style.backgroundColor = cpHex;
 				hex = cpHex
 				output.innerHTML = printColors();
@@ -110,6 +117,15 @@ window.addEventListener("hashchange", function() {
 	output.innerHTML = printColors();
 
 	cp.setHex(hex);
+});
+
+document.getElementById("about-anchor").addEventListener("click", function(e) {
+	e.preventDefault();
+	document.getElementById("about").style.display = "block";
+});
+
+document.getElementById("close").addEventListener("click", function() {
+	document.getElementById("about").style.display = "none";
 });
 
 
