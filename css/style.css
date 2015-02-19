@@ -80,6 +80,10 @@ sup {
 	font-size: 0.5em;
 }
 
+rect {
+	pointer-events: none;
+}
+
 /* header */
 #headwrap {
 	width: 100%;
