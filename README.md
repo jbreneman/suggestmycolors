@@ -1,1 +1,1 @@
-//TODO: write readme. Yeah I'm lazy.
+suggestmycolors is a small color app I wrote a long time ago that I've rewritten in javascript as part of my goal of learning javascript. Demo: http://jessebreneman.com/suggest/
