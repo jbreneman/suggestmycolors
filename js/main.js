@@ -1,3 +1,6 @@
+"use strict";
+/*jslint browser: true */
+
 function hex2rgb(hex) {
 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 return result ? {
@@ -44,12 +47,14 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 	var mutate = {r: addR + increment, g: addG + increment, b: addB + increment};
 	var mutateBy = {r: mutate.r, g: mutate.g, b: mutate.b}; 
 	var output = "";
-
+	
 	for(var i = 1; i <= amount; i++) {
+		var insideColor = "";
+
 		if(opposite === true) {
-			var insideColor = rgbToHex(addR > 0 ? 255 - startRGB.r : startRGB.r, addG > 0 ? 255 - startRGB.g : startRGB.g, addB > 0 ? 255 - startRGB.b : startRGB.b);
+			insideColor = rgbToHex(addR > 0 ? 255 - startRGB.r : startRGB.r, addG > 0 ? 255 - startRGB.g : startRGB.g, addB > 0 ? 255 - startRGB.b : startRGB.b);
 		} else {
-			var insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
+			insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
 		}
 
 		output += "<div class=\"color\" style=\"background: " + insideColor + "\"><a href=\"index.html" + insideColor + "\">" + insideColor + "</a></div>";
@@ -74,11 +79,11 @@ function isValidHex(hex) {
 	return valid ? hex : "#577d06";
 }
 
-var hex = isValidHex(window.location.hash);;
+var hex = isValidHex(window.location.hash);
 var color = document.getElementById("color");
 var pick = document.getElementById("pick");
 var header = document.getElementById("headwrap");
-var headAnchor = header.getElementsByClassName("head-anchor")
+var headAnchor = header.getElementsByClassName("head-anchor");
 var slider = document.getElementById("slider");
 var picker = document.getElementById("picker");
 var output = document.getElementById("outputs");
@@ -89,19 +94,19 @@ color.innerHTML = "";
 
 ColorPicker.fixIndicators(sliderIndicator, pickerIndicator);
 
-var cp = ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate, sliderCoordinate) {
+var cp = new ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate, sliderCoordinate) {
 				ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
                 color.innerHTML = "<p>" + cpHex + "</p>";
 				//color.textContent = cpHex;
 				//color.style.backgroundColor = cpHex;
 				header.style.backgroundColor = cpHex;
 
-				for(i = 0; i < headAnchor.length; ++i) {
-					(hsv.v > .6 && hsv.s < .6) ? headAnchor[i].style.color = "#000" : headAnchor[i].style.color = "#fff";
+				for(var i = 0; i < headAnchor.length; ++i) {
+					(hsv.v > 0.6 && hsv.s < 0.6) ? headAnchor[i].style.color = "#000" : headAnchor[i].style.color = "#fff";
 				}
 
 				pick.style.backgroundColor = cpHex;
-				hex = cpHex
+				hex = cpHex;
 				output.innerHTML = printColors();
             });
 
@@ -109,7 +114,7 @@ cp.setHex(hex);
 
 picker.addEventListener("mouseup", function() {
 	window.location.hash = hex;
-})
+});
 
 //watch for the hash change and make sure the colorpicker stays updated. Only needed due to being able to click on mutated colors
 window.addEventListener("hashchange", function() {
