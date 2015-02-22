@@ -1,7 +1,7 @@
 "use strict";
 /*jslint browser: true */
 
-function grabPalette(name) {
+function loadPalette(name) {
 	if(localStorage && localStorage.getItem(name)) {
 		return JSON.parse(localStorage.getItem(name));
 	} else {
@@ -10,7 +10,7 @@ function grabPalette(name) {
 }
 
 function savePalette(name, data) {
-	if(localStorage) {
+	if(localStorage && !localStorage.getItem(name)) {
 		localStorage.setItem(name, JSON.stringify(data));
 		return localStorage.getItem(name) ? true : false;
 	} else {
@@ -18,11 +18,30 @@ function savePalette(name, data) {
 	}
 }
 
+function deletePalette(name) {
+	if(localStorage && localStorage.getItem(name)) {
+		localStorage.removeItem(name);
+		return !localStorage.getItem(name) ? true : false;
+	} else {
+		return false;
+	}
+}
 
-var test = savePalette('lol', [1, 2, 3, 4, 5]);
+function listPalettes() {
+	if(localStorage) {
+		var palettes = [];
 
-console.log(test);
+		for (var i = 0; i < localStorage.length; i++) {
+			palettes[i] = localStorage.key(i);
+		}
+		return palettes.length > 0 ? palettes : false;
+	} else {
+		return false;
+	}
+}
 
+deletePalette('lol');
+console.log(listPalettes());
 
 
 
