@@ -1,6 +1,66 @@
 "use strict";
 /*jslint browser: true */
 
+function grabPalette(name) {
+	if(localStorage && localStorage.getItem(name)) {
+		return JSON.parse(localStorage.getItem(name));
+	} else {
+		return false;
+	}
+}
+
+function savePalette(name, data) {
+	if(localStorage) {
+		localStorage.setItem(name, JSON.stringify(data));
+		return localStorage.getItem(name) ? true : false;
+	} else {
+		return false;
+	}
+}
+
+
+var test = savePalette('lol', [1, 2, 3, 4, 5]);
+
+console.log(test);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function hex2rgb(hex) {
 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 return result ? {
@@ -12,8 +72,8 @@ return result ? {
 }
 
 function componentToHex(c) {
-var hex = c.toString(16);
-return hex.length == 1 ? "0" + hex : hex;
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
@@ -95,20 +155,20 @@ color.innerHTML = "";
 ColorPicker.fixIndicators(sliderIndicator, pickerIndicator);
 
 var cp = new ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate, sliderCoordinate) {
-				ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
-                color.innerHTML = "<p>" + cpHex + "</p>";
-				//color.textContent = cpHex;
-				//color.style.backgroundColor = cpHex;
-				header.style.backgroundColor = cpHex;
+	ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
+    color.innerHTML = "<p>" + cpHex + "</p>";
+	//color.textContent = cpHex;
+	//color.style.backgroundColor = cpHex;
+	header.style.backgroundColor = cpHex;
 
-				for(var i = 0; i < headAnchor.length; ++i) {
-					(hsv.v > 0.6 && hsv.s < 0.6) ? headAnchor[i].style.color = "#000" : headAnchor[i].style.color = "#fff";
-				}
+	for(var i = 0; i < headAnchor.length; ++i) {
+		(hsv.v > 0.6 && hsv.s < 0.6) ? headAnchor[i].style.color = "#000" : headAnchor[i].style.color = "#fff";
+	}
 
-				pick.style.backgroundColor = cpHex;
-				hex = cpHex;
-				output.innerHTML = printColors();
-            });
+	pick.style.backgroundColor = cpHex;
+	hex = cpHex;
+	output.innerHTML = printColors();
+});
 
 cp.setHex(hex);
 

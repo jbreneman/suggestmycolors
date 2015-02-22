@@ -1,3 +1,5 @@
 node_modules/*
 .jshintrc
 gulpfile.js
+suggestnew.sublime-project
+suggestnew.sublime-workspace
