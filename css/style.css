@@ -86,7 +86,7 @@ rect {
 /* header */
 #headwrap {
 	width: 100%;
-	height: 100px;
+	height: 6rem;
 	background: #577d06;
 }
 
@@ -98,7 +98,7 @@ header {
 }
 
 	header a {
-		/*margin: 10px 0 0 0;*/
+		margin: 0 0.3em;
 		font-size: 4rem;
 		text-decoration: none;
 		/*text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.6), 0px 0px 1px rgba(0, 0, 0, 0.9);*/
@@ -110,6 +110,7 @@ header {
 	header a:hover {
 		/*text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.3);*/
 		opacity: 0.5;
+		cursor: pointer;
 	}
 	
 	header nav {
@@ -121,8 +122,15 @@ header {
 		font-size: 2.5rem;
 	}
 
-	#about-anchor {
-		cursor: pointer;
+	.dropdown {
+		position: absolute;
+		/*display: none;*/
+		width: 15rem;
+		height: 10rem;
+		background: #000;
+		top: 5rem;
+		z-index: 20;
+		margin: 0.5em;
 	}
 
 /* content */
@@ -264,6 +272,7 @@ main {
 }
 
 #color p {
+	text-transform: uppercase;
 	font-size: 3em;
 	text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6), 0px 0px 2px rgba(0, 0, 0, 0.9);
 	color: #fff;
@@ -280,21 +289,18 @@ main {
 	padding: 1rem;
 }
 
-.menu {
-	width: 2rem;
-	height: 2rem;
-  	position: absolute;
+#palettes input {
+	font-size: 1.5em;
+	background: transparent;
+	width: 100%;
+	height: auto;
+	border: 1px solid #fff;
+	padding: 0.1em;
 }
 
-.menu:before {
-	content: "";
-  position: absolute;
-  top: 0.25em;
-  left: 0;
-  width: 1em;
-  height: 0.125em;
-  border-top: 0.375em double #000;
-  border-bottom: 0.125em solid #000;
+#palettes input:hover {
+	background: #eee;
+	border: 1px solid #ccc;
 }
 
 .saved {
@@ -304,7 +310,7 @@ main {
 	border: 1px solid #ccc;
 	margin: 4% 0 0 0;
 	font-size: 1.5em;
-	padding: 0.2em;
+	padding: 0.3em;
 }
 
 .output {
@@ -350,6 +356,7 @@ main {
 	}
 
 	.color a {
+		text-transform: uppercase;
 		display: block;
 		padding: 0.5rem 0 0 1rem;
 		font-size: 2rem;

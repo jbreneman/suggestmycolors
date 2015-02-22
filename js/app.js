@@ -40,8 +40,6 @@ function listPalettes() {
 	}
 }
 
-deletePalette('lol');
-console.log(listPalettes());
 
 
 
