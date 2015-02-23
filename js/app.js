@@ -41,7 +41,7 @@ function listPalettes() {
 }
 
 
-
+savePalette('lol', [1,2,3,4,5]);
 
 
 
@@ -204,6 +204,7 @@ window.addEventListener("hashchange", function() {
 function toggleClass(ref, first, second) {
 	return ref.className === first ? ref.className = second : ref.className = first;
 }
+
 var about = document.getElementById("about");
 var overlay = document.getElementById("overlay");
 
@@ -224,4 +225,44 @@ document.getElementById("overlay").addEventListener("click", function() {
 	toggleClass(overlay, "hide", "show");
 });
 
+/*saved palettes*/
+var saved = document.getElementById("saved");
+var clear = document.getElementById("clear");
 
+document.getElementById("saved-anchor").addEventListener("click", function(e) {
+	e.preventDefault();
+	toggleClass(saved, "dropdown hide", "dropdown show");
+	toggleClass(clear, "hide", "show");
+});
+
+document.getElementById("clear").addEventListener("click", function() {
+	toggleClass(saved, "dropdown hide", "dropdown show");
+	toggleClass(clear, "hide", "show");
+});
+
+var paletteName = document.getElementById("palette-name");
+var nameSave = '';
+
+paletteName.addEventListener('focus', function() {
+	nameSave = paletteName.textContent;
+});
+
+paletteName.addEventListener("blur", function() {
+	
+	paletteName.textContent
+});
+
+var palList = listPalettes();
+var pal = "";
+var target = document.getElementById("saved");
+
+for(var i = 0; i < palList.length; ++i) {
+	pal += '<li>' + palList[i] + '</li>';
+}
+
+console.log(pal);
+if(pal !== '') {
+	target.innerHTML = pal;
+} else {
+	target.innerHTML('<li>No palettes saved</li>');
+}
