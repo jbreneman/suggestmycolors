@@ -1,124 +1,133 @@
 "use strict";
 /*jslint browser: true */
 
-function loadPalette(name) {
-	if(localStorage && localStorage.getItem(name)) {
-		return JSON.parse(localStorage.getItem(name));
-	} else {
-		return false;
-	}
-}
-
-function savePalette(name, data) {
-	if(localStorage && !localStorage.getItem(name)) {
-		localStorage.setItem(name, JSON.stringify(data));
-		return localStorage.getItem(name) ? true : false;
-	} else {
-		return false;
-	}
-}
-
-function deletePalette(name) {
-	if(localStorage && localStorage.getItem(name)) {
-		localStorage.removeItem(name);
-		return !localStorage.getItem(name) ? true : false;
-	} else {
-		return false;
-	}
-}
-
-function listPalettes() {
-	if(localStorage) {
-		var palettes = [];
-
-		for (var i = 0; i < localStorage.length; i++) {
-			palettes[i] = localStorage.key(i);
+var l = {
+	load: function(name) {
+		if(localStorage && localStorage.getItem(name)) {
+			return JSON.parse(localStorage.getItem(name));
+		} else {
+			return false;
 		}
-		return palettes.length > 0 ? palettes : false;
-	} else {
-		return false;
+	},
+	save: function(name, data) {
+		if(localStorage) {
+			localStorage.setItem(name, JSON.stringify(data));
+			return localStorage.getItem(name) ? true : false;
+		} else {
+			return false;
+		}
+	},
+	rename: function(oldName, newName) {
+		localStorage.setItem(newName, localStorage.getItem(oldName));
+		localStorage.removeItem(oldName);
+		return localStorage.getItem(newName) ? true : false;
+	},
+	del: function(name) {
+		if(localStorage && localStorage.getItem(name)) {
+			localStorage.removeItem(name);
+			return !localStorage.getItem(name) ? true : false;
+		} else {
+			return false;
+		}
+	},
+	list: function() {
+		if(localStorage) {
+			var palettes = [];
+
+			for (var i = 0; i < localStorage.length; i++) {
+				palettes[i] = localStorage.key(i);
+			}
+			return palettes.length > 0 ? palettes : false;
+		} else {
+			return false;
+		}
 	}
+};
+
+
+l.save('realllllly reallllllllllllllllllly long names are awesome are they not?', [1,2,3,4,5]);
+//savePalette('lol', [1,2,3,4,5]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//helper functions
+function $(expr, con) {
+	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
 }
 
+$.hexToRGB = function(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-savePalette('lol', [1,2,3,4,5]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function hex2rgb(hex) {
-var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
-    rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
+	return result ? {
+	    r: parseInt(result[1], 16),
+	    g: parseInt(result[2], 16),
+	    b: parseInt(result[3], 16),
+	    rgb: parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16)
 	} : null;
-}
+};
 
-function componentToHex(c) {
-	var hex = c.toString(16);
-	return hex.length == 1 ? "0" + hex : hex;
-}
+$.RGBToHex = function(r, g, b) {
+	function componentToHex(c) {
+		var hex = c.toString(16);
+		return hex.length == 1 ? "0" + hex : hex;
+	}
 
-function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
+};
 
 //function that changes any number to the range of 0 < x < 255. Keeps iterating until within this range
-function zeroTo255(number) {
+$.zeroTo255 = function(number) {
 	if(number > 255) {
 		number -= 255;
 		if(number > 255) {
-			number = zeroTo255(number);
+			number = $.zeroTo255(number);
 		}
 	}
 
 	if(number < 0) {
 		number += 255;
 		if(number < 0) {
-			number = zeroTo255(number);
+			number = $.zeroTo255(number);
 		}
 	}
 	return number;
-}
+};
+
+$.toggleClass = function(ref, first, second) {
+	return ref.className === first ? ref.className = second : ref.className = first;
+};
+
+
+
 
 //the meat of the app. takes a color and returns divs
 function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 	//split into separate rgb channels
-	var startRGB = hex2rgb(color);
+	var startRGB = $.hexToRGB(color);
 
 	//save the current data in mutate, and set the mutate increment to the initial data
 	var mutate = {r: addR + increment, g: addG + increment, b: addB + increment};
@@ -129,9 +138,9 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 		var insideColor = "";
 
 		if(opposite === true) {
-			insideColor = rgbToHex(addR > 0 ? 255 - startRGB.r : startRGB.r, addG > 0 ? 255 - startRGB.g : startRGB.g, addB > 0 ? 255 - startRGB.b : startRGB.b);
+			insideColor = $.RGBToHex(addR > 0 ? 255 - startRGB.r : startRGB.r, addG > 0 ? 255 - startRGB.g : startRGB.g, addB > 0 ? 255 - startRGB.b : startRGB.b);
 		} else {
-			insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
+			insideColor = $.RGBToHex($.zeroTo255(startRGB.r + mutate.r), $.zeroTo255(startRGB.g + mutate.g), $.zeroTo255(startRGB.b + mutate.b));
 		}
 
 		output += "<div class=\"color\" style=\"background: " + insideColor + "\"><a href=\"index.html" + insideColor + "\">" + insideColor + "</a></div>";
@@ -201,28 +210,24 @@ window.addEventListener("hashchange", function() {
 	cp.setHex(hex);
 });
 
-function toggleClass(ref, first, second) {
-	return ref.className === first ? ref.className = second : ref.className = first;
-}
-
 var about = document.getElementById("about");
 var overlay = document.getElementById("overlay");
 
 document.getElementById("about-anchor").addEventListener("click", function(e) {
 	e.preventDefault();
 
-	toggleClass(about, "hide", "show");
-	toggleClass(overlay, "hide", "show");
+	$.toggleClass(about, "hide", "show");
+	$.toggleClass(overlay, "hide", "show");
 });
 
 document.getElementById("close").addEventListener("click", function() {
-	toggleClass(about, "hide", "show");
-	toggleClass(overlay, "hide", "show");
+	$.toggleClass(about, "hide", "show");
+	$.toggleClass(overlay, "hide", "show");
 });
 
 document.getElementById("overlay").addEventListener("click", function() {
-	toggleClass(about, "hide", "show");
-	toggleClass(overlay, "hide", "show");
+	$.toggleClass(about, "hide", "show");
+	$.toggleClass(overlay, "hide", "show");
 });
 
 /*saved palettes*/
@@ -231,13 +236,13 @@ var clear = document.getElementById("clear");
 
 document.getElementById("saved-anchor").addEventListener("click", function(e) {
 	e.preventDefault();
-	toggleClass(saved, "dropdown hide", "dropdown show");
-	toggleClass(clear, "hide", "show");
+	$.toggleClass(saved, "dropdown hide", "dropdown show");
+	$.toggleClass(clear, "hide", "show");
 });
 
 document.getElementById("clear").addEventListener("click", function() {
-	toggleClass(saved, "dropdown hide", "dropdown show");
-	toggleClass(clear, "hide", "show");
+	$.toggleClass(saved, "dropdown hide", "dropdown show");
+	$.toggleClass(clear, "hide", "show");
 });
 
 var paletteName = document.getElementById("palette-name");
@@ -249,10 +254,10 @@ paletteName.addEventListener('focus', function() {
 
 paletteName.addEventListener("blur", function() {
 	
-	paletteName.textContent
+	paletteName.textContent;
 });
 
-var palList = listPalettes();
+var palList = l.list();
 var pal = "";
 var target = document.getElementById("saved");
 
