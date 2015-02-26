@@ -1,33 +1,23 @@
 "use strict";
 /*jslint browser: true */
 
+//load and save palettes
 var l = {
 	load: function(name) {
-		if(localStorage && localStorage.getItem(name)) {
-			return JSON.parse(localStorage.getItem(name));
-		} else {
-			return false;
-		}
+		return localStorage && localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : false;
 	},
 	save: function(name, data) {
 		if(localStorage) {
-			localStorage.setItem(name, JSON.stringify(data));
-			return localStorage.getItem(name) ? true : false;
-		} else {
-			return false;
+			return localStorage.setItem(name, JSON.stringify(data));
 		}
 	},
 	rename: function(oldName, newName) {
-		localStorage.setItem(newName, localStorage.getItem(oldName));
-		localStorage.removeItem(oldName);
-		return localStorage.getItem(newName) ? true : false;
+		this.save(newName, localStorage.getItem(oldName));
+		this.del(oldName);
 	},
 	del: function(name) {
 		if(localStorage && localStorage.getItem(name)) {
-			localStorage.removeItem(name);
-			return !localStorage.getItem(name) ? true : false;
-		} else {
-			return false;
+			return localStorage.removeItem(name);
 		}
 	},
 	list: function() {
@@ -38,15 +28,12 @@ var l = {
 				palettes[i] = localStorage.key(i);
 			}
 			return palettes.length > 0 ? palettes : false;
-		} else {
-			return false;
 		}
 	}
 };
 
 
-l.save('realllllly reallllllllllllllllllly long names are awesome are they not?', [1,2,3,4,5]);
-//savePalette('lol', [1,2,3,4,5]);
+//l.save('realllllly reallllllllllllllllllly long names are awesome are they not?', [1,2,3,4,5]);
 
 
 
@@ -121,8 +108,17 @@ $.toggleClass = function(ref, first, second) {
 	return ref.className === first ? ref.className = second : ref.className = first;
 };
 
-
-
+$.bind = function(element, opt) {
+	if (element) {
+		for (var event in opt) {
+			var callback = opt[event];
+			
+			event.split(/\s+/).forEach(function (event) {
+				element.addEventListener(event, callback);
+			});
+		}
+	}
+};
 
 //the meat of the app. takes a color and returns divs
 function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
@@ -213,12 +209,20 @@ window.addEventListener("hashchange", function() {
 var about = document.getElementById("about");
 var overlay = document.getElementById("overlay");
 
-document.getElementById("about-anchor").addEventListener("click", function(e) {
+$.bind(document.getElementById("about-anchor"), {
+	"click": function(e) {
+		e.preventDefault();
+
+		$.toggleClass(about, "hide", "show");
+		$.toggleClass(overlay, "hide", "show");
+	}
+});
+/*document.getElementById("about-anchor").addEventListener("click", function(e) {
 	e.preventDefault();
 
 	$.toggleClass(about, "hide", "show");
 	$.toggleClass(overlay, "hide", "show");
-});
+});*/
 
 document.getElementById("close").addEventListener("click", function() {
 	$.toggleClass(about, "hide", "show");
@@ -248,14 +252,24 @@ document.getElementById("clear").addEventListener("click", function() {
 var paletteName = document.getElementById("palette-name");
 var nameSave = '';
 
-paletteName.addEventListener('focus', function() {
+$.bind(paletteName, {
+	'focus': function() {
+		nameSave = paletteName.value;
+		console.log(nameSave);
+	},
+	'blur': function() {
+		console.log("blurred");
+	}
+});
+
+/*paletteName.addEventListener('focus', function() {
 	nameSave = paletteName.textContent;
 });
 
 paletteName.addEventListener("blur", function() {
 	
 	paletteName.textContent;
-});
+});*/
 
 var palList = l.list();
 var pal = "";
