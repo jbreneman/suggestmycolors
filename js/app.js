@@ -206,47 +206,43 @@ window.addEventListener("hashchange", function() {
 	cp.setHex(hex);
 });
 
-var about = document.getElementById("about");
-var overlay = document.getElementById("overlay");
 
 $.bind(document.getElementById("about-anchor"), {
 	"click": function(e) {
 		e.preventDefault();
 
-		$.toggleClass(about, "hide", "show");
-		$.toggleClass(overlay, "hide", "show");
+		$.toggleClass(document.getElementById("about"), "hide", "show");
+		$.toggleClass(document.getElementById("overlay"), "hide", "show");
 	}
 });
-/*document.getElementById("about-anchor").addEventListener("click", function(e) {
-	e.preventDefault();
 
-	$.toggleClass(about, "hide", "show");
-	$.toggleClass(overlay, "hide", "show");
-});*/
-
-document.getElementById("close").addEventListener("click", function() {
-	$.toggleClass(about, "hide", "show");
-	$.toggleClass(overlay, "hide", "show");
+$.bind(document.getElementById("close-about"), {
+	"click": function() {
+		$.toggleClass(document.getElementById("about"), "hide", "show");
+		$.toggleClass(document.getElementById("overlay"), "hide", "show");
+	}
 });
 
-document.getElementById("overlay").addEventListener("click", function() {
-	$.toggleClass(about, "hide", "show");
-	$.toggleClass(overlay, "hide", "show");
+$.bind(document.getElementById("overlay"), {
+	"click": function() {
+		$.toggleClass(document.getElementById("about"), "hide", "show");
+		$.toggleClass(document.getElementById("overlay"), "hide", "show");
+	}
 });
 
 /*saved palettes*/
-var saved = document.getElementById("saved");
-var clear = document.getElementById("clear");
-
-document.getElementById("saved-anchor").addEventListener("click", function(e) {
-	e.preventDefault();
-	$.toggleClass(saved, "dropdown hide", "dropdown show");
-	$.toggleClass(clear, "hide", "show");
+$.bind(document.getElementById("saved-anchor"), {
+	"click": function(e) {
+		e.preventDefault();
+		$.toggleClass(document.getElementById("saved"), "hide", "show");
+	}
 });
 
-document.getElementById("clear").addEventListener("click", function() {
-	$.toggleClass(saved, "dropdown hide", "dropdown show");
-	$.toggleClass(clear, "hide", "show");
+$.bind(document.getElementById("close-saved"), {
+	"click": function(e) {
+		e.preventDefault();
+		$.toggleClass(document.getElementById("saved"), "hide", "show");
+	}
 });
 
 var paletteName = document.getElementById("palette-name");
@@ -255,33 +251,36 @@ var nameSave = '';
 $.bind(paletteName, {
 	'focus': function() {
 		nameSave = paletteName.value;
-		console.log(nameSave);
 	},
 	'blur': function() {
-		console.log("blurred");
+		nameSave === "Name this palette" ? l.save(paletteName.value) : l.rename(nameSave, paletteName.value);
+		refreshPalettes();
 	}
 });
 
-/*paletteName.addEventListener('focus', function() {
-	nameSave = paletteName.textContent;
-});
+ function refreshPalettes() {
+ 	var palList = l.list();
+	var pal = "";
+	var target = document.getElementById("saved-palettes");
 
-paletteName.addEventListener("blur", function() {
-	
-	paletteName.textContent;
-});*/
+	for(var i = 0; i < palList.length; ++i) {
+		pal += '<li>' + palList[i] + '</li>';
+	}
 
-var palList = l.list();
-var pal = "";
-var target = document.getElementById("saved");
+ 	if(pal !== '') {
+		target.innerHTML = pal;
+	} else {
+		target.innerHTML('<li>No palettes saved</li>');
+	}
+ }
 
-for(var i = 0; i < palList.length; ++i) {
-	pal += '<li>' + palList[i] + '</li>';
+function init() {
+	refreshPalettes();
 }
 
-console.log(pal);
-if(pal !== '') {
-	target.innerHTML = pal;
+if (document.readyState !== "loading") {
+	init();
 } else {
-	target.innerHTML('<li>No palettes saved</li>');
+	// Wait for it
+	document.addEventListener("DOMContentLoaded", init);
 }

@@ -121,31 +121,6 @@ header {
 		font-size: 2.5rem;
 	}
 
-	.dropdown {
-		position: absolute;
-		width: 15rem;
-		background: #000;
-		top: 4rem;
-		z-index: 20;
-		margin: 0.5em;
-		background: #eee;
-		border: 1px solid #ccc;
-		font-size: 1.5em;
-		color: #333;
-		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
-		font-family: ciclesemi;
-	}
-
-	.dropdown li {
-		margin: 0 0.2em 0.2em 0.2em;
-		border-top: 1px solid #ccc;
-	}
-
-	.dropdown li:first-child {
-		margin: 0.2em;
-		border: 0;
-	}
-
 /* content */
 
 main {
@@ -168,7 +143,7 @@ main {
 	z-index: 20;
 }
 
-#about button {
+.close {
 	position: absolute;
 	background: transparent;
 	border: transparent;
@@ -183,13 +158,13 @@ main {
 	-webkit-transition: all 0.2s ease;
 }
 
-#about button:hover {
+.close button:hover {
 	color: rgba(0, 0, 0, .9);
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 }
 
-#about button:active {
+.close button:active {
 	outline: transparent;
 }
 
@@ -301,33 +276,66 @@ main {
 	margin: 0;
 }
 
-#palettes {
+#palette-wrap {
 	float: right;
+}
+
+#saved {
 	position: relative;
 	height: 20rem;
 	width: 15rem;
-	margin: 0 1em 1em 1em;
+	background: #fff;
+	padding: 1.2rem 1rem 1rem 1rem;
+	display: inline-block;
+	vertical-align: top;
+	font-size: 1.5em;
+}
+	
+	#saved ul {
+		overflow: auto;
+		margin: 0.2rem 0 0 0;
+	}
+
+	#saved li {
+		margin: 0 0.2em 0.2em 0.2em;
+		border-top: 1px solid #ccc;
+		list-style-type: none;
+	}
+
+	#saved li:first-child {
+		margin: 0.2em;
+		border: 0;
+	}
+
+#palettes {
+	height: 20rem;
+	width: 15rem;
+	margin: 0 1em 1em 0;
 	background: #fff;
 	padding: 1rem;
+	display: inline-block;
+	vertical-align: top;
 }
 
-#palettes input {
-	font-size: 1.5em;
-	background: transparent;
-	width: 100%;
-	height: auto;
-	border: 1px solid #fff;
-	padding: 0.1em;
-	transition: all 0.2s ease;
-	-webkit-transition: all 0.2s ease;
-}
+	#palettes input {
+		font-family: ciclesemi;
+		font-size: 1.5em;
+		font-weight: bold;
+		background: transparent;
+		width: 100%;
+		height: auto;
+		border: 1px solid #fff;
+		padding: 0.1em;
+		transition: all 0.2s ease;
+		-webkit-transition: all 0.2s ease;
+	}
 
-#palettes input:hover {
-	background: #eee;
-	border: 1px solid #ccc;
-	transition: all 0.2s ease;
-	-webkit-transition: all 0.2s ease;
-}
+	#palettes input:hover {
+		background: #eee;
+		border: 1px solid #ccc;
+		transition: all 0.2s ease;
+		-webkit-transition: all 0.2s ease;
+	}
 
 .saved {
 	width: 100%;
