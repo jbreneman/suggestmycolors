@@ -3,6 +3,10 @@
 
 //load and save palettes
 var l = {
+	check: function(name) {
+		console.log(localStorage && localStorage.getItem(name) ? true : false);
+		return localStorage && localStorage.getItem(name) ? true : false;
+	},
 	load: function(name) {
 		return localStorage && localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : false;
 	},
@@ -251,9 +255,18 @@ var nameSave = '';
 $.bind(paletteName, {
 	'focus': function() {
 		nameSave = paletteName.value;
+		console.log('focus -');
+		console.log('old name: ' + nameSave);
+		console.log('new name: ' + paletteName.value);
+		refreshPalettes();
 	},
 	'blur': function() {
-		nameSave === "Name this palette" ? l.save(paletteName.value) : l.rename(nameSave, paletteName.value);
+		if(paletteName.value !== "Name this palette") {
+			console.log('blur -');
+			console.log('old name: ' + nameSave);
+			console.log('new name: ' + paletteName.value);
+			l.check(nameSave) ? l.rename(nameSave, paletteName.value) : l.save(paletteName.value);
+		}
 		refreshPalettes();
 	}
 });

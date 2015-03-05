@@ -297,6 +297,7 @@ main {
 }
 	
 	#saved ul {
+		height: 90%;
 		overflow: auto;
 		margin: 0.2rem 0 0 0;
 	}
