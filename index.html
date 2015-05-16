@@ -45,33 +45,43 @@
 
 <main>
 	<section id="pick">
-		<div id="picker-wrapper">
-		  <div id="picker"></div>
-		  <div id="picker-indicator"></div>
+		<div class="pick-wrap">
+			<div id="picker-wrapper">
+			  <div id="picker"></div>
+			  <div id="picker-indicator"></div>
+			</div>
+			
+			<div id="slider-wrapper">
+			  <div id="slider"></div>
+			  <div id="slider-indicator"></div>
+			</div>
 		</div>
-		
-		<div id="slider-wrapper">
-		  <div id="slider"></div>
-		  <div id="slider-indicator"></div>
-		</div>
+
 
 		<div id="color">
 			You need to turn Javascript on for this app to work properly. Sorry. :/
 		</div>
 	</section>
 	
-	<section id="outputs">
+	<section>
+		<div class="column-labels">
+			<div class="column"><h2>Opposites</h2></div><div class="column"><h2>Half Opposites</h2></div><div class="column"><h2>Red Shift</h2></div><div class="column"><h2>Green Shift</h2></div><div class="column"><h2>Blue Shift</h2></div>
+		</div>
+
+		<div id="outputs">
+			
+		</div>
 	
 	</section>
 </main>
 	
 <footer>
 	
-	<p>&copy; Copyright Jesse Breneman 2015. All Rights Reserved.</p>
+	<p>&copy; Copyright Jesse Breneman 2015. All Rights Reserved. <a href="https://github.com/jbreneman/suggestmycolors">View on Github</a></p>
 	
 </footer>
-
-<script src="js/app.min.js"></script>
+<script src="js/colorpicker.js"></script>
+<script src="js/main.js"></script>
 <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
 		 http://chromium.org/developers/how-tos/chrome-frame-getting-started -->
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->

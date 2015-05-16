@@ -57,7 +57,7 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 			insideColor = rgbToHex(zeroTo255(startRGB.r + mutate.r), zeroTo255(startRGB.g + mutate.g), zeroTo255(startRGB.b + mutate.b));
 		}
 
-		output += "<div class=\"color\" style=\"background: " + insideColor + "\"><a href=\"index.html" + insideColor + "\">" + insideColor + "</a></div>";
+		output += "<div class=\"color\" style=\"background: " + insideColor + "\"><span class=\"color-desc\" style=\"color: " + insideColor + ";\">" + insideColor + "</span> <a href=\"index.html" + insideColor + "\"><img src=\"img/arrow-right.svg\" alt=\"Go to color\"></a></div>";
 		mutate = {r: mutate.r + mutateBy.r, g: mutate.g + mutateBy.g, b: mutate.b + mutateBy.b};
 
 	}
@@ -67,11 +67,11 @@ function mutateColor(color, addR, addG, addB, increment, amount, opposite) {
 //this returns divs of mutated colors based on global var hex that gets passed around more than a football in the superbowl
 //above analogy may be wrong, i hate sports
 function printColors() {
-	return  "<div class=\"column\"><h2>Opposites</h2>" + mutateColor(hex, 255, 0, 0, 0, 1, true) + mutateColor(hex, 0, 255, 0, 0, 1, true) + mutateColor(hex, 0, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 0, 0, 1, true) + mutateColor(hex, 0, 255, 255, 0, 1, true) + mutateColor(hex, 255, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 255, 0, 1, true) + "</div>" +
-			"<div class=\"column\"><h2>Half Opposites</h2>" + mutateColor(hex, 128, -32, 0, 0, 1, false) + mutateColor(hex, 0, 128, -32, 0, 1, false) + mutateColor(hex, -32, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 0, 0, 1, false) + mutateColor(hex, 0, 128, 128, 0, 1, false) + mutateColor(hex, 128, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 128, 0, 1, false) + "</div>" +
-			"<div class=\"column\"><h2>Red Shift</h2>" + mutateColor(hex, 32, 0, 0, 0, 7, false) + "</div>" +
-			"<div class=\"column\"><h2>Green Shift</h2>" + mutateColor(hex, 0, 32, 0, 0, 7, false) + "</div>" +
-			"<div class=\"column\"><h2>Blue Shift</h2>" + mutateColor(hex, 0, 0, 32, 0, 7, false) + "</div>";
+	return  "<div class=\"column\">" + mutateColor(hex, 255, 0, 0, 0, 1, true) + mutateColor(hex, 0, 255, 0, 0, 1, true) + mutateColor(hex, 0, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 0, 0, 1, true) + mutateColor(hex, 0, 255, 255, 0, 1, true) + mutateColor(hex, 255, 0, 255, 0, 1, true) + mutateColor(hex, 255, 255, 255, 0, 1, true) + "</div>" +
+			"<div class=\"column\">" + mutateColor(hex, 128, -32, 0, 0, 1, false) + mutateColor(hex, 0, 128, -32, 0, 1, false) + mutateColor(hex, -32, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 0, 0, 1, false) + mutateColor(hex, 0, 128, 128, 0, 1, false) + mutateColor(hex, 128, 0, 128, 0, 1, false) + mutateColor(hex, 128, 128, 128, 0, 1, false) + "</div>" +
+			"<div class=\"column\">" + mutateColor(hex, 32, 0, 0, 0, 7, false) + "</div>" +
+			"<div class=\"column\">" + mutateColor(hex, 0, 32, 0, 0, 7, false) + "</div>" +
+			"<div class=\"column\">" + mutateColor(hex, 0, 0, 32, 0, 7, false) + "</div>";
 }
 
 function isValidHex(hex) {
@@ -97,6 +97,7 @@ ColorPicker.fixIndicators(sliderIndicator, pickerIndicator);
 var cp = new ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordinate, sliderCoordinate) {
 				ColorPicker.positionIndicators(document.getElementById("slider-indicator"), document.getElementById("picker-indicator"), sliderCoordinate, pickerCoordinate);
                 color.innerHTML = "<p>" + cpHex + "</p>";
+                color.style.color = cpHex;
 				//color.textContent = cpHex;
 				//color.style.backgroundColor = cpHex;
 				header.style.backgroundColor = cpHex;
@@ -111,6 +112,10 @@ var cp = new ColorPicker(slider, picker, function(cpHex, hsv, rgb, pickerCoordin
             });
 
 cp.setHex(hex);
+
+picker.addEventListener("mouseup", function() {
+	window.location.hash = hex;
+});
 
 picker.addEventListener("mouseup", function() {
 	window.location.hash = hex;
